@@ -29,7 +29,7 @@ class GeolocalizacionService {
 		String calleFormateada = this.formatearStringParaGeolocalizacion(calle);
 		String strUrl = "https://maps.googleapis.com/maps/api/geocode/json?address="+nro+"+"+calleFormateada+",+"+ciudadFormateada+",Argentina&key=AIzaSyBg2CP1nI3C2sHkugpAcdd6qgGez5pWZ60"
 		def geolocalizacion = realizarPeticion(strUrl);
-		def objetoCoordenadas = geolocalizacion.geometry;
+		def objetoCoordenadas = geolocalizacion.results[0].geometry.location;
 		return objetoCoordenadas;
 	}
 	
