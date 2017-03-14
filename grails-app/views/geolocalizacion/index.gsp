@@ -148,8 +148,10 @@
 			}
 
 			function funcionExitoCoordenadas(res){
-				console.log(res);
 				ocultarCargando();
+				var radio = $("#radio").val();
+				var cantResultados = $("#cantidadResultados").val();
+				getMediosOff(res.lat, res.lng, radio, cantResultados);
 			}
 
 			function funcionCargandoCoordenadas(){
