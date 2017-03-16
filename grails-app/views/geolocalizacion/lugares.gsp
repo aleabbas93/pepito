@@ -1,7 +1,7 @@
-<div class="col-sm-10 col-sm-offset-1">
-	<div class="panel panel-primary">
+<div class="col-sm-12">
+	<div class="panel panel-success">
 	    <div class="panel-heading">
-	    	Lugares
+	    	<span class="glyphicon glyphicon-usd"></span> &nbsp Lugares de pago
 	    </div>
 	    <div class="panel-body">
 	    	<div>          

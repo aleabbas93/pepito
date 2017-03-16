@@ -6,20 +6,24 @@ import groovy.json.JsonSlurper
 @Transactional
 class GeolocalizacionService {
 	def site = "MLA";
-	def peticionCualquierLugarCerca = ""
+	def peticionCualquierLugarCerca = "";
+	def mediosDePago = ['Cualquiera','rapipago','redlink', 'pagofacil','provincianet','cargavirtual'];
+	
     def serviceMethod() {
 
     }
 	
 	def getMediosOff(String latitud, String longitud, String radio, String cantResultados, String medio){
-		if(medio.equals("")){
-			return this.getCualquierMedioOffCerca(latitud, longitud, radio, cantResultados)
+		if(!medio.equals("Cualquiera")){
+			medio = medio+"/agencies";
+		}else{
+			medio = "agencies/search"
 		}
-		return null;
+		return this.getCualquierMedioOffCerca(latitud, longitud, radio, cantResultados, medio);
 	}
 	
-	def getCualquierMedioOffCerca(latitud, longitud, radio, cantResultados){
-		String strUrl = "https://api.mercadolibre.com/sites/MLA/payment_methods/agencies/search?near_to="+latitud+","+longitud+","+radio+"&limit="+cantResultados;
+	def getCualquierMedioOffCerca(latitud, longitud, radio, cantResultados, medio){
+		String strUrl = "https://api.mercadolibre.com/sites/MLA/payment_methods/"+medio+"?near_to="+latitud+","+longitud+","+radio+"&limit="+cantResultados;
 		def lugares = realizarPeticion(strUrl);
 		return lugares.results;
 	}
@@ -27,7 +31,7 @@ class GeolocalizacionService {
 	def obtenerGeolocalizacion(calle, nro, ciudad){
 		String ciudadFormateada = this.formatearStringParaGeolocalizacion(ciudad);
 		String calleFormateada = this.formatearStringParaGeolocalizacion(calle);
-		String strUrl = "https://maps.googleapis.com/maps/api/geocode/json?address="+nro+"+"+calleFormateada+",+"+ciudadFormateada+",Argentina&key=AIzaSyBg2CP1nI3C2sHkugpAcdd6qgGez5pWZ60"
+		String strUrl = "https://maps.googleapis.com/maps/api/geocode/json?address="+nro+"+"+calleFormateada+",+"+ciudadFormateada+",Argentina&key=AIzaSyDiYFCZ306D5W15nfSSqYbQdBTZ5nA5fZc"
 		def geolocalizacion = realizarPeticion(strUrl);
 		def objetoCoordenadas = geolocalizacion.results[0].geometry.location;
 		return objetoCoordenadas;
@@ -50,5 +54,9 @@ class GeolocalizacionService {
 		connection.setRequestProperty("User-Agent", "Mozilla/5.0")
 		def respuesta =json.parse(connection.getInputStream())
 		return respuesta;
+	}
+	
+	def getMediosDePago(){
+		return this.mediosDePago;
 	}
 }
